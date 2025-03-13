@@ -1,0 +1,23 @@
+# Build output
+dist/
+build/
+
+# Node modules
+node_modules/
+
+# Coverage directory
+coverage/
+
+# Logs
+logs/
+*.log
+
+# Package files
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+
+# Misc
+.DS_Store
+.env
+.env.* 
