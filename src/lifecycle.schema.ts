@@ -1,4 +1,5 @@
 import { z } from 'zod';
+
 import { MCPRequestSchema, MCPResponseSchema } from './message.schema';
 
 export const ClientCapabilitiesSchema = z.object({
@@ -12,7 +13,6 @@ export const ClientCapabilitiesSchema = z.object({
 });
 
 export type ClientCapabilities = z.infer<typeof ClientCapabilitiesSchema>;
-
 
 export const ImplementationSchema = z.object({
   name: z.string(),
@@ -32,21 +32,25 @@ export const InitializeRequestSchema = MCPRequestSchema.extend({
 
 export type InitializeRequest = z.infer<typeof InitializeRequestSchema>;
 
-
 export const ServerCapabilitiesSchema = z.object({
   logging: z.record(z.string(), z.unknown()).optional(),
   experimental: z.record(z.string(), z.record(z.string(), z.unknown())).optional(),
-  tools: z.object({
-    listChanged: z.boolean().optional(),
-  }).optional(),
-  prompts: z.object({
-    listChanged: z.boolean().optional(),
-  }).optional(),
-  resources: z.object({
-    listChanged: z.boolean().optional(),
-    subscribe: z.boolean().optional(),
-  }).optional(),
-
+  tools: z
+    .object({
+      listChanged: z.boolean().optional(),
+    })
+    .optional(),
+  prompts: z
+    .object({
+      listChanged: z.boolean().optional(),
+    })
+    .optional(),
+  resources: z
+    .object({
+      listChanged: z.boolean().optional(),
+      subscribe: z.boolean().optional(),
+    })
+    .optional(),
 });
 
 export type ServerCapabilities = z.infer<typeof ServerCapabilitiesSchema>;
