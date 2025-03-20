@@ -1,5 +1,6 @@
 import { z } from 'zod';
 
+import { LoggingLevelSchema } from './logging.schema';
 import { MCPNotificationSchema } from './message.schema';
 
 export const InitializedNotificationSchema = MCPNotificationSchema.extend({
@@ -55,3 +56,20 @@ export const ToolListChangedNotificationSchema = MCPNotificationSchema.extend({
 });
 
 export type ToolListChangedNotification = z.infer<typeof ToolListChangedNotificationSchema>;
+
+export const LoggingMessageNotificationSchema = MCPNotificationSchema.extend({
+  method: z.literal('notifications/message'),
+  params: z.object({
+    level: LoggingLevelSchema,
+    logger: z.string().optional(),
+    data: z.unknown(),
+  }),
+});
+
+export type LoggingMessageNotification = z.infer<typeof LoggingMessageNotificationSchema>;
+
+export const RootsListChangedNotificationSchema = MCPNotificationSchema.extend({
+  method: z.literal('notifications/roots/list_changed'),
+});
+
+export type RootsListChangedNotification = z.infer<typeof RootsListChangedNotificationSchema>;

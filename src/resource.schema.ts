@@ -1,6 +1,11 @@
 import { z } from 'zod';
 
-import { MCPRequestSchema, PaginatedRequestSchema, PaginatedResultSchema } from './message.schema';
+import {
+  MCPRequestSchema,
+  MCPResponseResultSchema,
+  PaginatedRequestSchema,
+  PaginatedResultSchema,
+} from './message.schema';
 
 export const ListResourcesRequestSchema = PaginatedRequestSchema.extend({
   method: z.literal('resources/list'),
@@ -118,3 +123,22 @@ export const EmbeddedResourceSchema = AnnotatedSchema.extend({
 });
 
 export type EmbeddedResource = z.infer<typeof EmbeddedResourceSchema>;
+
+export const ListRootsRequestSchema = MCPRequestSchema.extend({
+  method: z.literal('roots/list'),
+});
+
+export type ListRootsRequest = z.infer<typeof ListRootsRequestSchema>;
+
+export const RootSchema = z.object({
+  uri: z.string(),
+  name: z.string().optional(),
+});
+
+export type Root = z.infer<typeof RootSchema>;
+
+export const ListRootsResultSchema = MCPResponseResultSchema.extend({
+  roots: z.array(RootSchema),
+});
+
+export type ListRootsResult = z.infer<typeof ListRootsResultSchema>;

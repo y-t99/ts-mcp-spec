@@ -54,7 +54,7 @@ export type MCPNotification = z.infer<typeof MCPNotificationSchema>;
 export const PaginatedRequestSchema = MCPRequestSchema.extend({
   params: z
     .object({
-      cursor: z.number().optional(),
+      cursor: z.string().optional(),
     })
     .optional(),
 });
@@ -62,7 +62,7 @@ export const PaginatedRequestSchema = MCPRequestSchema.extend({
 export type PaginatedRequest = z.infer<typeof PaginatedRequestSchema>;
 
 export const PaginatedResultSchema = MCPResponseResultSchema.extend({
-  nextCursor: z.number().optional(),
+  nextCursor: z.string().optional(),
 });
 
 export type PaginatedResult = z.infer<typeof PaginatedResultSchema>;
