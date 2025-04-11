@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
-import { MCPRequestSchema, MCPResponseSchema } from './message.schema';
+import { LATEST_PROTOCOL_VERSION } from './constants';
+import { MCPNotificationSchema, MCPRequestSchema, MCPResponseSchema } from './message.schema';
 
 export const ClientCapabilitiesSchema = z.object({
   roots: z
@@ -22,9 +23,9 @@ export const ImplementationSchema = z.object({
 export type Implementation = z.infer<typeof ImplementationSchema>;
 
 export const InitializeRequestSchema = MCPRequestSchema.extend({
-  method: z.literal('initialize'),
+  method: z.literal('initialize').default('initialize'),
   params: z.object({
-    protocolVersion: z.string(),
+    protocolVersion: z.literal(LATEST_PROTOCOL_VERSION).default(LATEST_PROTOCOL_VERSION),
     capabilities: ClientCapabilitiesSchema,
     clientInfo: ImplementationSchema,
   }),
@@ -57,7 +58,7 @@ export type ServerCapabilities = z.infer<typeof ServerCapabilitiesSchema>;
 
 export const InitializeResponseSchema = MCPResponseSchema.extend({
   result: z.object({
-    protocolVersion: z.string(),
+    protocolVersion: z.literal(LATEST_PROTOCOL_VERSION).default(LATEST_PROTOCOL_VERSION),
     serverInfo: ImplementationSchema,
     capabilities: ServerCapabilitiesSchema,
     instructions: z.string().optional(),
@@ -65,3 +66,9 @@ export const InitializeResponseSchema = MCPResponseSchema.extend({
 });
 
 export type InitializeResponse = z.infer<typeof InitializeResponseSchema>;
+
+export const InitializedNotificationSchema = MCPNotificationSchema.extend({
+  method: z.literal('notifications/initialized').default('notifications/initialized'),
+});
+
+export type InitializedNotification = z.infer<typeof InitializedNotificationSchema>;

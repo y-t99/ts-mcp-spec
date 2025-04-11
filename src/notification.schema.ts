@@ -3,12 +3,6 @@ import { z } from 'zod';
 import { LoggingLevelSchema } from './logging.schema';
 import { MCPNotificationSchema } from './message.schema';
 
-export const InitializedNotificationSchema = MCPNotificationSchema.extend({
-  method: z.literal('notifications/initialized'),
-});
-
-export type InitializedNotification = z.infer<typeof InitializedNotificationSchema>;
-
 export const CancelledNotificationSchema = MCPNotificationSchema.extend({
   method: z.literal('notifications/cancelled'),
   params: z.object({
