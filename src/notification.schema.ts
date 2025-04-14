@@ -3,27 +3,6 @@ import { z } from 'zod';
 import { LoggingLevelSchema } from './logging.schema';
 import { MCPNotificationSchema } from './message.schema';
 
-export const CancelledNotificationSchema = MCPNotificationSchema.extend({
-  method: z.literal('notifications/cancelled'),
-  params: z.object({
-    requestId: z.union([z.string(), z.number()]),
-    reason: z.string().optional(),
-  }),
-});
-
-export type CancelledNotification = z.infer<typeof CancelledNotificationSchema>;
-
-export const ProgressNotificationSchema = MCPNotificationSchema.extend({
-  method: z.literal('notifications/progress'),
-  params: z.object({
-    progressToken: z.union([z.string(), z.number()]),
-    progress: z.number(),
-    total: z.number().optional(),
-  }),
-});
-
-export type ProgressNotification = z.infer<typeof ProgressNotificationSchema>;
-
 export const PromptListChangedNotificationSchema = MCPNotificationSchema.extend({
   method: z.literal('notifications/prompts/list_changed'),
 });
