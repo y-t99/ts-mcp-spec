@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { MCPRequestSchema, MCPResponseResultSchema } from './message.schema';
+import { MCPRequestSchema, MCPResponseResultSchema, MCPResponseSchema } from './message.schema';
 import { ImageContentSchema, RoleSchema, TextContentSchema } from './resource.schema';
 
 export const PromptReferenceSchema = z.object({
@@ -18,7 +18,7 @@ export const ResourceReferenceSchema = z.object({
 export type ResourceReference = z.infer<typeof ResourceReferenceSchema>;
 
 export const CompleteRequestSchema = MCPRequestSchema.extend({
-  method: z.literal('completion/complete'),
+  method: z.literal('completion/complete').default('completion/complete'),
   params: z.object({
     ref: z.union([PromptReferenceSchema, ResourceReferenceSchema]),
     argument: z.object({
@@ -39,6 +39,12 @@ export const CompleteResultSchema = MCPResponseResultSchema.extend({
 });
 
 export type CompleteResult = z.infer<typeof CompleteResultSchema>;
+
+export const CompleteResponseSchema = MCPResponseSchema.extend({
+  result: CompleteResultSchema,
+});
+
+export type CompleteResponse = z.infer<typeof CompleteResponseSchema>;
 
 export const SamplingMessageSchema = z.object({
   role: RoleSchema,
