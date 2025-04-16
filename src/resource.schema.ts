@@ -1,15 +1,19 @@
 import { z } from 'zod';
 
 import {
+  MCPNotificationSchema,
   MCPRequestSchema,
   MCPResponseResultSchema,
+  MCPResponseSchema,
   PaginatedRequestSchema,
   PaginatedResultSchema,
 } from './message.schema';
 
 export const ListResourcesRequestSchema = PaginatedRequestSchema.extend({
-  method: z.literal('resources/list'),
+  method: z.literal('resources/list').default('resources/list'),
 });
+
+export type ListResourcesRequest = z.infer<typeof ListResourcesRequestSchema>;
 
 export const RoleSchema = z.enum(['user', 'assistant']);
 
@@ -36,16 +40,20 @@ export const ResourceSchema = AnnotatedSchema.extend({
 
 export type Resource = z.infer<typeof ResourceSchema>;
 
-export type ListResourcesRequest = z.infer<typeof ListResourcesRequestSchema>;
-
 export const ListResourcesResultSchema = PaginatedResultSchema.extend({
   resources: z.array(ResourceSchema),
 });
 
 export type ListResourcesResult = z.infer<typeof ListResourcesResultSchema>;
 
+export const ListResourcesResponseSchema = MCPResponseSchema.extend({
+  result: ListResourcesResultSchema,
+});
+
+export type ListResourcesResponse = z.infer<typeof ListResourcesResponseSchema>;
+
 export const ListResourceTemplatesRequestSchema = PaginatedRequestSchema.extend({
-  method: z.literal('resources/templates/list'),
+  method: z.literal('resources/templates/list').default('resources/templates/list'),
 });
 
 export type ListResourceTemplatesRequest = z.infer<typeof ListResourceTemplatesRequestSchema>;
@@ -65,8 +73,14 @@ export const ListResourceTemplatesResultSchema = PaginatedResultSchema.extend({
 
 export type ListResourceTemplatesResult = z.infer<typeof ListResourceTemplatesResultSchema>;
 
+export const ListResourceTemplatesResponseSchema = MCPResponseSchema.extend({
+  result: ListResourceTemplatesResultSchema,
+});
+
+export type ListResourceTemplatesResponse = z.infer<typeof ListResourceTemplatesResponseSchema>;
+
 export const SubscribeRequestSchema = MCPRequestSchema.extend({
-  method: z.literal('resources/subscribe'),
+  method: z.literal('resources/subscribe').default('resources/subscribe'),
   params: z.object({
     uri: z.string(),
   }),
@@ -124,21 +138,40 @@ export const EmbeddedResourceSchema = AnnotatedSchema.extend({
 
 export type EmbeddedResource = z.infer<typeof EmbeddedResourceSchema>;
 
-export const ListRootsRequestSchema = MCPRequestSchema.extend({
-  method: z.literal('roots/list'),
+export const ReadResourceRequestSchema = MCPRequestSchema.extend({
+  method: z.literal('resources/read').default('resources/read'),
+  params: z.object({
+    uri: z.string(),
+  }),
 });
 
-export type ListRootsRequest = z.infer<typeof ListRootsRequestSchema>;
+export type ReadResourceRequest = z.infer<typeof ReadResourceRequestSchema>;
 
-export const RootSchema = z.object({
-  uri: z.string(),
-  name: z.string().optional(),
+export const ReadResourceResultSchema = MCPResponseResultSchema.extend({
+  contents: z.array(z.union([TextResourceContentsSchema, BlobResourceContentsSchema])),
 });
 
-export type Root = z.infer<typeof RootSchema>;
+export type ReadResourceResult = z.infer<typeof ReadResourceResultSchema>;
 
-export const ListRootsResultSchema = MCPResponseResultSchema.extend({
-  roots: z.array(RootSchema),
+export const ReadResourceResponseSchema = MCPResponseSchema.extend({
+  result: ReadResourceResultSchema,
 });
 
-export type ListRootsResult = z.infer<typeof ListRootsResultSchema>;
+export type ReadResourceResponse = z.infer<typeof ReadResourceResponseSchema>;
+
+export const ResourceListChangedNotificationSchema = MCPNotificationSchema.extend({
+  method: z
+    .literal('notifications/resources/list_changed')
+    .default('notifications/resources/list_changed'),
+});
+
+export type ResourceListChangedNotification = z.infer<typeof ResourceListChangedNotificationSchema>;
+
+export const ResourceUpdatedNotificationSchema = MCPNotificationSchema.extend({
+  method: z.literal('notifications/resources/updated').default('notifications/resources/updated'),
+  params: z.object({
+    uri: z.string(),
+  }),
+});
+
+export type ResourceUpdatedNotification = z.infer<typeof ResourceUpdatedNotificationSchema>;

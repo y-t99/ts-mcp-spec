@@ -63,7 +63,7 @@ export const ModelPreferencesSchema = z.object({
 export type ModelPreferences = z.infer<typeof ModelPreferencesSchema>;
 
 export const CreateMessageRequestSchema = MCPRequestSchema.extend({
-  method: z.literal('sampling/createMessage'),
+  method: z.literal('sampling/createMessage').default('sampling/createMessage'),
   params: z.object({
     messages: z.array(SamplingMessageSchema),
     modelPreferences: ModelPreferencesSchema.optional(),

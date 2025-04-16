@@ -3,27 +3,6 @@ import { z } from 'zod';
 import { LoggingLevelSchema } from './logging.schema';
 import { MCPNotificationSchema } from './message.schema';
 
-export const PromptListChangedNotificationSchema = MCPNotificationSchema.extend({
-  method: z.literal('notifications/prompts/list_changed'),
-});
-
-export type PromptListChangedNotification = z.infer<typeof PromptListChangedNotificationSchema>;
-
-export const ResourceListChangedNotificationSchema = MCPNotificationSchema.extend({
-  method: z.literal('notifications/resources/list_changed'),
-});
-
-export type ResourceListChangedNotification = z.infer<typeof ResourceListChangedNotificationSchema>;
-
-export const ResourceUpdatedNotificationSchema = MCPNotificationSchema.extend({
-  method: z.literal('notifications/resources/updated'),
-  params: z.object({
-    uri: z.string(),
-  }),
-});
-
-export type ResourceUpdatedNotification = z.infer<typeof ResourceUpdatedNotificationSchema>;
-
 export const ToolListChangedNotificationSchema = MCPNotificationSchema.extend({
   method: z.literal('notifications/tools/list_changed'),
 });
@@ -40,9 +19,3 @@ export const LoggingMessageNotificationSchema = MCPNotificationSchema.extend({
 });
 
 export type LoggingMessageNotification = z.infer<typeof LoggingMessageNotificationSchema>;
-
-export const RootsListChangedNotificationSchema = MCPNotificationSchema.extend({
-  method: z.literal('notifications/roots/list_changed'),
-});
-
-export type RootsListChangedNotification = z.infer<typeof RootsListChangedNotificationSchema>;
