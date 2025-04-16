@@ -4,7 +4,11 @@
  */
 
 // Protocol version
-export const LATEST_PROTOCOL_VERSION = '2024-11-05';
+export enum ProtocolVersion {
+  V_2024_11_05 = '2024-11-05',
+  V_2025_03_26 = '2025-03-26',
+}
+export const LATEST_PROTOCOL_VERSION = ProtocolVersion.V_2024_11_05;
 
 // JSON-RPC version used by MCP
 export const JSONRPC_VERSION = '2.0';

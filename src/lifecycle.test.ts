@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest';
 
-import { ERROR_CODES } from './constants';
+import { ERROR_CODES, ProtocolVersion } from './constants';
 import {
   InitializedNotificationSchema,
   InitializeRequestSchema,
@@ -16,6 +16,7 @@ describe('lifecycle: Initialization', () => {
     const request = InitializeRequestSchema.parse({
       id: 0,
       params: {
+        protocolVersion: ProtocolVersion.V_2024_11_05,
         capabilities: {},
         clientInfo: {
           name: 'vitest',
@@ -40,6 +41,7 @@ describe('lifecycle: Initialization', () => {
     const response = InitializeResponseSchema.parse({
       id: 0,
       result: {
+        protocolVersion: ProtocolVersion.V_2024_11_05,
         capabilities: {},
         serverInfo: {
           name: 'vitest',
@@ -125,6 +127,7 @@ describe('Capability Negotiation', () => {
     const request = InitializeRequestSchema.parse({
       id: 0,
       params: {
+        protocolVersion: ProtocolVersion.V_2024_11_05,
         clientInfo: {
           name: 'vitest',
           version: '1.0.0',
@@ -169,6 +172,7 @@ describe('Capability Negotiation', () => {
     const response = InitializeResponseSchema.parse({
       id: 0,
       result: {
+        protocolVersion: ProtocolVersion.V_2024_11_05,
         serverInfo: {
           name: 'vitest',
           version: '1.0.0',

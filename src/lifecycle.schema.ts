@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { LATEST_PROTOCOL_VERSION } from './constants';
+import { LATEST_PROTOCOL_VERSION, ProtocolVersion } from './constants';
 import { MCPNotificationSchema, MCPRequestSchema, MCPResponseSchema } from './message.schema';
 
 export const ClientCapabilitiesSchema = z.object({
@@ -25,7 +25,7 @@ export type Implementation = z.infer<typeof ImplementationSchema>;
 export const InitializeRequestSchema = MCPRequestSchema.extend({
   method: z.literal('initialize').default('initialize'),
   params: z.object({
-    protocolVersion: z.literal(LATEST_PROTOCOL_VERSION).default(LATEST_PROTOCOL_VERSION),
+    protocolVersion: z.nativeEnum(ProtocolVersion).default(LATEST_PROTOCOL_VERSION),
     capabilities: ClientCapabilitiesSchema,
     clientInfo: ImplementationSchema,
   }),
@@ -58,7 +58,7 @@ export type ServerCapabilities = z.infer<typeof ServerCapabilitiesSchema>;
 
 export const InitializeResponseSchema = MCPResponseSchema.extend({
   result: z.object({
-    protocolVersion: z.literal(LATEST_PROTOCOL_VERSION).default(LATEST_PROTOCOL_VERSION),
+    protocolVersion: z.nativeEnum(ProtocolVersion).default(LATEST_PROTOCOL_VERSION),
     serverInfo: ImplementationSchema,
     capabilities: ServerCapabilitiesSchema,
     instructions: z.string().optional(),

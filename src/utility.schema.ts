@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { MCPNotificationSchema, MCPRequestSchema } from './message.schema';
+import { MCPNotificationSchema, MCPRequestSchema, ProgressTokenSchema } from './message.schema';
 
 export const PingRequestSchema = MCPRequestSchema.extend({
   method: z.literal('ping').default('ping'),
@@ -21,7 +21,7 @@ export type CancelledNotification = z.infer<typeof CancelledNotificationSchema>;
 export const ProgressNotificationSchema = MCPNotificationSchema.extend({
   method: z.literal('notifications/progress').default('notifications/progress'),
   params: z.object({
-    progressToken: z.union([z.string(), z.number()]),
+    progressToken: ProgressTokenSchema,
     progress: z.number(),
     total: z.number().optional(),
   }),

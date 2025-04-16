@@ -1,10 +1,15 @@
 import { describe, expect, it } from 'vitest';
 
-import { ERROR_CODES, JSONRPC_VERSION, LATEST_PROTOCOL_VERSION } from './constants';
+import {
+  ERROR_CODES,
+  JSONRPC_VERSION,
+  LATEST_PROTOCOL_VERSION,
+  ProtocolVersion,
+} from './constants';
 
 describe('MCP Constants', () => {
   it('should export the correct protocol version', () => {
-    expect(LATEST_PROTOCOL_VERSION).toBe('2024-11-05');
+    expect(LATEST_PROTOCOL_VERSION).toBe(ProtocolVersion.V_2025_03_26);
   });
 
   it('should export the correct JSON-RPC version', () => {

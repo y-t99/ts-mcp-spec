@@ -2,6 +2,14 @@ import { z } from 'zod';
 
 import { JSONRPC_VERSION } from './constants';
 
+export const ProgressTokenSchema = z.union([z.string(), z.number()]);
+
+export type ProgressToken = z.infer<typeof ProgressTokenSchema>;
+
+export const CursorSchema = z.string();
+
+export type Cursor = z.infer<typeof CursorSchema>;
+
 export const MCPRequestSchema = z.object({
   jsonrpc: z.literal(JSONRPC_VERSION).default(JSONRPC_VERSION),
   id: z.union([z.string(), z.number()]),
@@ -10,7 +18,7 @@ export const MCPRequestSchema = z.object({
     .object({
       _meta: z
         .object({
-          progressToken: z.union([z.string(), z.number()]).optional(),
+          progressToken: ProgressTokenSchema.optional(),
         })
         .optional(),
     })
@@ -31,7 +39,7 @@ export type MCPResponseResult = z.infer<typeof MCPResponseResultSchema>;
 export type PaginatedRequest = z.infer<typeof PaginatedRequestSchema>;
 
 export const PaginatedResultSchema = MCPResponseResultSchema.extend({
-  nextCursor: z.string().optional(),
+  nextCursor: CursorSchema.optional(),
 });
 
 export type PaginatedResult = z.infer<typeof PaginatedResultSchema>;
@@ -67,7 +75,7 @@ export type MCPNotification = z.infer<typeof MCPNotificationSchema>;
 export const PaginatedRequestSchema = MCPRequestSchema.extend({
   params: z
     .object({
-      cursor: z.string().optional(),
+      cursor: CursorSchema.optional(),
     })
     .optional(),
 });
